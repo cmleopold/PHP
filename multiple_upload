@@ -1,0 +1,55 @@
+<?php
+/**
+ * Controllador
+ */
+
+    public function agregar()
+	{           
+           if($this->input->post())
+           {       
+                $filesCount = count($_FILES['file']['name']);
+                    for($i = 0; $i < $filesCount; $i++){
+                        $_FILES['upload_File']['name'] = $_FILES['file']['name'][$i];
+                        $_FILES['upload_File']['type'] = $_FILES['file']['type'][$i];
+                        $_FILES['upload_File']['tmp_name'] = $_FILES['file']['tmp_name'][$i];
+                        $_FILES['upload_File']['error'] = $_FILES['file']['error'][$i];
+                        $_FILES['upload_File']['size'] = $_FILES['file']['size'][$i];
+                        $ruta= 'public/imagenes/documentos/';
+                        $config['upload_path'] = $ruta;
+                        $config['allowed_types'] = 'gif|jpg|png|docx|xls|xlsx|doc';                
+                        $this->load->library('upload', $config);
+                        $this->upload->initialize($config);
+                        if($this->upload->do_upload('upload_File')){
+                            $fileData = $this->upload->data();                                                           
+                            
+                            $data=array(
+                            "archivo"=>$fileData['file_name'],
+                           );
+                           $this->documentos_model->insertarArchivo($data);
+                        }
+                }           
+           }         
+      
+    }
+?>
+
+
+/**
+* Vista
+**/
+  
+<?php echo form_open_multipart(base_url()."backend/documentos/agregar", array('name'=>'form','id'=>'demo-form','role'=>'form', 'data-parsley-validate')); ?> 
+
+    <div class="row">                                                            
+        <div class="col-sm-6 col-lg-6">
+            <label for="titulo" style="margin-bottom: 15px;">Documentos * :</label>    
+            <input type="file" class="form-control" name="file[]" multiple />                                                        
+        </div>                                                          
+    </div>
+    <div class="row">                                                                    
+        <div class="col-sm-12 col-lg-12">
+            <button type="submit" class="btn btn-round btn-primary" style="width: 100%;">Registrar Documento</button>                                                                   
+        </div>                                                                                                                                    
+    </div>
+
+<?php echo form_close();?>
