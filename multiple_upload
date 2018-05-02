@@ -7,8 +7,8 @@
 	{           
            if($this->input->post())
            {       
-                $filesCount = count($_FILES['file']['name']);
-                    for($i = 0; $i < $filesCount; $i++){
+                $cuantos = count($_FILES['file']['name']);
+                    for($i = 0; $i < $cuantos; $i++){
                         $_FILES['upload_File']['name'] = $_FILES['file']['name'][$i];
                         $_FILES['upload_File']['type'] = $_FILES['file']['type'][$i];
                         $_FILES['upload_File']['tmp_name'] = $_FILES['file']['tmp_name'][$i];
